@@ -42,6 +42,7 @@ document.body.appendChild(app.view)
 
 
 
+
 /***********************************************
 *************** OPPONENTS LOGIC ****************
 ************************************************/
@@ -179,7 +180,7 @@ function endGame() {
 ************************************************/
 app.ticker.add((delta) => {
   playerInput()
-  // opponentMovement(delta)
+  opponentMovement(delta)
   if (checkForCollision(player, opponent)) {
     console.log('we boomed')
     endGame()
