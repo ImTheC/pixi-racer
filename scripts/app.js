@@ -14,6 +14,7 @@ const OPPONENT_DEFAULT = {
   y: -250
 }
 let gameInProgress = false
+let speedMultiplier = 5
 
 const setPosition = (object, x, y) => {
   object.x = x
@@ -64,7 +65,6 @@ opponent.anchor.set(0.5)
 opponent.tint = 0x00C671
 opponent.y = OPPONENT_DEFAULT.y
 opponent.x = OPPONENT_DEFAULT.x
-app.stage.addChild(opponent)
 /************************************************/
 
 
@@ -75,26 +75,25 @@ app.stage.addChild(opponent)
 const player = PIXI.Sprite.from('./assets/images/ship.png')
 setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
 player.anchor.set(0.5)
-app.stage.addChild(player)
 /************************************************/
 
 
 
-// /***********************************************
-// ******************** DEBUG *********************
-// ************************************************/
-// let text = new PIXI.Text(
-//   'Alexa and Kierra',
-//   {
-//     fontSize: 24,
-//     fill: 0xFFFFFF,
-//     wordWrap: true,
-//     wordWrapWidth: 180
-//   }
-// );
-// text.x = 10
-// app.stage.addChild(text)
-// /************************************************/
+/***********************************************
+******************* DISPLAY ********************
+************************************************/
+let displayText = new PIXI.Text(
+  0,
+  {
+    fontSize: 24,
+    fill: 0xFFFFFF,
+    wordWrap: true,
+    wordWrapWidth: 180
+  }
+);
+displayText.y = 10
+displayText.x = 10
+/************************************************/
 
 
 
@@ -123,7 +122,6 @@ const playerInput = () => {
 ************************************************/
 const opponentMovement = (delta) => {
   if (opponent) {
-    const speedMultiplier = 5
     let elapsed = 0.0
 
     elapsed += delta;
@@ -135,6 +133,8 @@ const opponentMovement = (delta) => {
       opponent.x = Math.random() * (MAX_X - MIN_X) + MIN_X;
       app.stage.removeChild(player)
       app.stage.addChild(opponent, player)
+      speedMultiplier++
+      displayText.text = speedMultiplier - 5
     }
   }
 }
@@ -165,7 +165,7 @@ function checkForCollision(object1, object2) {
 ****************** endGame *********************
 ************************************************/
 function endGame() {
-    let gameOverText = new PIXI.Text(
+  let gameOverText = new PIXI.Text(
     'GAME OVER',
     {
       fontSize: 24,
@@ -177,6 +177,8 @@ function endGame() {
   gamemusic.stop()
   player_death.play()
   app.stage.removeChild(player, opponent)
+  app.stage.addChild(gameOverText)
+  speedMultiplier = 5
   setTimeout(() => wahwahwah.play(), 1000)
 
   setTimeout(() => {
@@ -184,6 +186,8 @@ function endGame() {
     newPosition = getRandomOpponentPosition()
     setPosition(opponent, newPosition.x, newPosition.y)
     setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
+    displayText.text = "0"
+    app.stage.addChild(opponent, player, displayText)
     gameInProgress = true
     gamemusic.play()
   }, 5000);
