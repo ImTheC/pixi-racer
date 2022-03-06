@@ -44,6 +44,17 @@ document.body.appendChild(app.view)
 
 
 /***********************************************
+***************** SOUND LOGIC ******************
+************************************************/
+const gamemusic = PIXI.sound.Sound.from('./assets/sounds/MegaHyperUltrastorm.mp3')
+const wahwahwah = PIXI.sound.Sound.from('./assets/sounds/wah_wah_wah.mp3')
+const player_death = PIXI.sound.Sound.from('./assets/sounds/player_death.wav')
+/************************************************/
+
+
+
+
+/***********************************************
 *************** OPPONENTS LOGIC ****************
 ************************************************/
 const opponent = PIXI.Sprite.from('./assets/images/ship.png')
@@ -161,16 +172,17 @@ function endGame() {
   );
   gameOverText.x = 400
   gameOverText.y = 500
-  app.stage.addChild(gameOverText)
+  gamemusic.stop()
   app.stage.removeChild(player, opponent)
+  setTimeout(() => wahwahwah.play(), 1000)
 
   setTimeout(() => {
     app.stage.removeChild(gameOverText)
     newPosition = getRandomOpponentPosition()
     setPosition(opponent, newPosition.x, newPosition.y)
     setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
-    app.stage.addChild(opponent, player)
-  }, 500);
+    gamemusic.play()
+  }, 5000);
 }
 /************************************************/
 
@@ -187,4 +199,32 @@ app.ticker.add((delta) => {
     endGame()
   }
 })
+/************************************************/
+
+
+/***********************************************
+**************** START BUTTON ******************
+************************************************/
+const startButton = new PIXI.Graphics()
+startButton.lineStyle(2, 0xFEEB77, 1)
+startButton.beginFill(0x00FF00, 1)
+startButton.drawCircle(500, 500, 200)
+startButton.endFill()
+startButton.interactive = true
+startButton.buttonMode = true
+startButton.on('pointerup', startGame);
+
+let playGameText = new PIXI.Text(
+  'GO',
+  {
+    fontSize: 100,
+    fill: 0xFFFFFF,
+    strokeThickness: 10
+  }
+);
+playGameText.x = 418
+playGameText.y = 430
+
+startButton.addChild(playGameText)
+app.stage.addChild(startButton)
 /************************************************/
