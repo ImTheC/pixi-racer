@@ -46,7 +46,7 @@ document.body.appendChild(app.view)
 /***********************************************
 *************** OPPONENTS LOGIC ****************
 ************************************************/
-const opponent = PIXI.Sprite.from('./assets/ship.png')
+opponent.anchor.set(0.5)
 opponent.tint = 0x00C671
 opponent.y = OPPONENT_DEFAULT.y
 opponent.x = OPPONENT_DEFAULT.x
