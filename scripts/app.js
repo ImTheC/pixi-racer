@@ -5,6 +5,8 @@ const MAX_X = 911
 const MIN_X = 88
 const MAX_Y = 905
 const MIN_Y = 92
+const STAR_SIZE_MIN = .015
+const STAR_SIZE_MAX = .03
 const PLAYER_DEFAULT = {
   x: 411,
   y: 900
@@ -31,6 +33,8 @@ const getRandomOpponentPosition = () => {
 const getRandomNum = (MAX, MIN) => {
   return Math.random() * (MAX - MIN) + MIN;
 }
+
+const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
 /************************************************/
 
 
@@ -142,6 +146,59 @@ const opponentMovement = (delta) => {
 
 
 
+
+/***********************************************
+***************** STAR LOGIC *******************
+************************************************/
+// Get the texture for rope.
+const starTexture = PIXI.Texture.from('./assets/images/star.png');
+
+const starAmount = 100
+
+// Create the stars
+const stars = [];
+for (let i = 0; i < starAmount; i++) {
+  const star = {
+    sprite: new PIXI.Sprite(starTexture),
+    scale: getRandomNum(STAR_SIZE_MAX, STAR_SIZE_MIN),
+    x: getRandomNum(1000, 0),
+    y: getRandomNum(1000, 0),
+    speed: getRandomNum(.3, .1),
+    tint: getRandomNum(5, 0) > 3 ? '0xFFFFFF' : genRandomHex(6)
+  }
+  star.sprite.anchor.x = 0.5;
+  star.sprite.anchor.y = 0.7;
+  placeStar(star)
+  app.stage.addChild(star.sprite);
+  stars.push(star);
+}
+
+function placeStar(star) {
+  star.sprite.tint = star.tint
+  star.sprite.scale.set(star.scale, star.scale);
+  star.sprite.x = star.x
+  star.sprite.y = star.y
+}
+
+const starMovement = (delta) => {
+  let elapsed = 0.0
+  elapsed += delta;
+
+  for (let i = 0; i < starAmount; i++) {
+    stars[i].sprite.y = stars[i].sprite.y + elapsed * stars[i].speed * speedMultiplier;
+
+    if (stars[i].sprite.y > 1010) {
+      app.stage.removeChild(stars[i])
+      stars[i].sprite.y = -10
+      stars[i].sprite.x = getRandomNum(1000, 0)
+    }
+  }
+}
+/************************************************/
+
+
+
+
 /***********************************************
 ************* checkForCollision ****************
 ************************************************/
@@ -202,6 +259,7 @@ function endGame() {
 const startRender = () => {
   app.ticker.add((delta) => {
     if (gameInProgress) {
+      starMovement(delta)
       playerInput()
       opponentMovement(delta)
       if (checkForCollision(player, opponent)) {
@@ -213,6 +271,7 @@ const startRender = () => {
   })
 }
 /************************************************/
+
 
 
 
