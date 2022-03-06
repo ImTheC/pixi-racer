@@ -13,6 +13,7 @@ const OPPONENT_DEFAULT = {
   x: 411,
   y: -250
 }
+let gameInProgress = false
 
 const setPosition = (object, x, y) => {
   object.x = x
@@ -30,6 +31,7 @@ const getRandomNum = (MAX, MIN) => {
   return Math.random() * (MAX - MIN) + MIN;
 }
 /************************************************/
+
 
 
 
@@ -173,6 +175,7 @@ function endGame() {
   gameOverText.x = 400
   gameOverText.y = 500
   gamemusic.stop()
+  player_death.play()
   app.stage.removeChild(player, opponent)
   setTimeout(() => wahwahwah.play(), 1000)
 
@@ -181,6 +184,7 @@ function endGame() {
     newPosition = getRandomOpponentPosition()
     setPosition(opponent, newPosition.x, newPosition.y)
     setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
+    gameInProgress = true
     gamemusic.play()
   }, 5000);
 }
@@ -191,15 +195,36 @@ function endGame() {
 /***********************************************
 ***************** RENDER LOOP ******************
 ************************************************/
-app.ticker.add((delta) => {
-  playerInput()
-  opponentMovement(delta)
-  if (checkForCollision(player, opponent)) {
-    console.log('we boomed')
-    endGame()
-  }
-})
+const startRender = () => {
+  app.ticker.add((delta) => {
+    if (gameInProgress) {
+      playerInput()
+      opponentMovement(delta)
+      if (checkForCollision(player, opponent)) {
+        console.log('we boomed')
+        gameInProgress = false
+        endGame()
+      }
+    }
+  })
+}
 /************************************************/
+
+
+
+/***********************************************
+***************** START GAME *******************
+************************************************/
+const startGame = () => {
+  app.stage.removeChild(startButton)
+  app.stage.addChild(player, opponent, displayText)
+  gamemusic.play()
+  gameInProgress = true
+  startRender()
+}
+/************************************************/
+
+
 
 
 /***********************************************
