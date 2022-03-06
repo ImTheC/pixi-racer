@@ -274,7 +274,6 @@ const startRender = () => {
       playerInput()
       opponentMovement(delta)
       if (checkForCollision(player, opponent)) {
-        console.log('we boomed')
         gameInProgress = false
         endGame()
       }
