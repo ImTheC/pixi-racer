@@ -46,6 +46,7 @@ document.body.appendChild(app.view)
 /***********************************************
 *************** OPPONENTS LOGIC ****************
 ************************************************/
+const opponent = PIXI.Sprite.from('./assets/images/ship.png')
 opponent.anchor.set(0.5)
 opponent.tint = 0x00C671
 opponent.y = OPPONENT_DEFAULT.y
@@ -58,7 +59,7 @@ app.stage.addChild(opponent)
 /***********************************************
 **************** PLAYERS LOGIC *****************
 ************************************************/
-const player = PIXI.Sprite.from('./assets/ship.png')
+const player = PIXI.Sprite.from('./assets/images/ship.png')
 setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
 player.anchor.set(0.5)
 app.stage.addChild(player)
