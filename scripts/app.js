@@ -13,8 +13,17 @@ const PLAYER_DEFAULT = {
 }
 const OPPONENT_DEFAULT = {
   x: 411,
-  y: -250
+  y: -250,
+  colors: [
+    '0xfd82ff', // pinkish
+    '0xff9e66', // orangeish
+    '0xf6ff00', // yellowish
+    '0x00C671', // greenish
+    '0x0091ff', // blueish
+    '0x8389f7', // purpleish
+  ]
 }
+let opponentColorIndex = 0
 let gameInProgress = false
 let speedMultiplier = 5
 
@@ -66,7 +75,7 @@ const player_death = PIXI.sound.Sound.from('./assets/sounds/player_death.wav')
 ************************************************/
 const opponent = PIXI.Sprite.from('./assets/images/ship.png')
 opponent.anchor.set(0.5)
-opponent.tint = 0x00C671
+opponent.tint = OPPONENT_DEFAULT.colors[0]
 opponent.y = OPPONENT_DEFAULT.y
 opponent.x = OPPONENT_DEFAULT.x
 /************************************************/
@@ -131,12 +140,14 @@ const opponentMovement = (delta) => {
     elapsed += delta;
     opponent.y = opponent.y + elapsed * speedMultiplier;
   
-    if (opponent.y > 1010) {
-      app.stage.removeChild(opponent)
+    if (opponent.y > 1100) {
+      opponentColorIndex++
+      if (opponentColorIndex === OPPONENT_DEFAULT.colors.length ) {
+        opponentColorIndex = 0
+      }
+      opponent.tint = OPPONENT_DEFAULT.colors[opponentColorIndex]
       opponent.y = -250
       opponent.x = Math.random() * (MAX_X - MIN_X) + MIN_X;
-      app.stage.removeChild(player)
-      app.stage.addChild(opponent, player)
       speedMultiplier++
       displayText.text = speedMultiplier - 5
     }
