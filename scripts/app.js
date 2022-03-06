@@ -106,6 +106,21 @@ let displayText = new PIXI.Text(
 );
 displayText.y = 10
 displayText.x = 10
+
+
+
+let debugText = new PIXI.Text(
+  'Work in Progress',
+  {
+    fontSize: 24,
+    fill: 0xFFFFFF,
+    wordWrap: true,
+    wordWrapWidth: 180
+  }
+);
+debugText.y = 10
+debugText.x = 890
+app.stage.addChild(debugText)
 /************************************************/
 
 
