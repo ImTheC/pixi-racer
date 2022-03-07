@@ -18,11 +18,14 @@ document.body.appendChild(app.view)
 let MAX_X = app.screen.width
 const MIN_X = 80
 let CENTER_X = MAX_X / 2
+
 let MAX_Y = app.screen.height
 const MIN_Y = 92
 let CENTER_Y = MAX_Y / 2
+
 const STAR_SIZE_MIN = .015
 const STAR_SIZE_MAX = .03
+
 let PLAYER_DEFAULT = {
   x: CENTER_X,
   y: MAX_Y - 120
