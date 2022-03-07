@@ -89,9 +89,25 @@ opponent.x = OPPONENT_DEFAULT.x
 /***********************************************
 **************** PLAYERS LOGIC *****************
 ************************************************/
+let followPointer = false
 const player = PIXI.Sprite.from('./assets/images/ship.png')
 setPosition(player, PLAYER_DEFAULT.x, PLAYER_DEFAULT.y)
 player.anchor.set(0.5)
+player.interactive = true
+player.on('pointerdown', () => followPointer = true)
+player.on('pointerup', () => followPointer = false)
+player.on('pointermove', (event) => {
+  if (followPointer) {
+    const inputPosition = event.data.global;
+
+    if (inputPosition.x > MIN_X && inputPosition.x < MAX_X - (player.width / 2)) {
+      player.x = inputPosition.x
+    }
+    if (inputPosition.y > MIN_Y && inputPosition.y < MAX_Y - (player.height / 2)) {
+      player.y = inputPosition.y
+    }
+  }
+})
 /************************************************/
 
 
@@ -127,25 +143,6 @@ debugText.x = MAX_X - debugText.width - 30
 app.stage.addChild(debugText)
 /************************************************/
 
-
-
-/***********************************************
-***************** playerInput ******************
-************************************************/
-const playerInput = () => {
-  // @TODO: Don't use mouse position like this. There's a better way.
-  const mouseposition = app.renderer.plugins.interaction.mouse.global;
-
-  if (mouseposition.x > MIN_X && mouseposition.x < MAX_X - (player.width / 2)) {
-    player.x = mouseposition.x
-  }
-  if (mouseposition.y > MIN_Y && mouseposition.y < MAX_Y - (player.height / 2)) {
-    player.y = mouseposition.y
-  }
-
-  // text.text = `X = ${player.x}; Y = ${player.y}` // *** DEBUG ***
-}
-/************************************************/
 
 
 
@@ -292,7 +289,6 @@ const startRender = () => {
   app.ticker.add((delta) => {
     if (gameInProgress) {
       starMovement(delta)
-      playerInput()
       opponentMovement(delta)
       if (checkForCollision(player, opponent)) {
         gameInProgress = false
