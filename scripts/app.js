@@ -60,6 +60,8 @@ const getRandomNum = (MAX, MIN) => {
 }
 
 const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 /************************************************/
 
 
@@ -129,12 +131,8 @@ player.on('pointermove', (event) => {
   if (followPointer) {
     const inputPosition = event.data.global;
 
-    if (inputPosition.x > MIN_X && inputPosition.x < MAX_X - (player.width / 2)) {
-      player.x = inputPosition.x
-    }
-    if (inputPosition.y > MIN_Y && inputPosition.y < MAX_Y - (player.height / 2)) {
-      player.y = inputPosition.y
-    }
+  player.x = clamp(inputPosition.x, MIN_X, MAX_X - (player.width / 2))
+  player.y = clamp(inputPosition.y, MIN_Y, MAX_Y - (player.height / 2))
   }
 })
 /************************************************/
