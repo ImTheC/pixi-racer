@@ -15,18 +15,20 @@ document.body.appendChild(app.view)
 /***********************************************
 ************** HELPERS & GLOBALS ***************
 ************************************************/
-const MAX_X = app.screen.width
+let MAX_X = app.screen.width
 const MIN_X = 80
-const MAX_Y = app.screen.height
+let CENTER_X = MAX_X / 2
+let MAX_Y = app.screen.height
 const MIN_Y = 92
+let CENTER_Y = MAX_Y / 2
 const STAR_SIZE_MIN = .015
 const STAR_SIZE_MAX = .03
-const PLAYER_DEFAULT = {
-  x: 411,
-  y: 900
+let PLAYER_DEFAULT = {
+  x: CENTER_X,
+  y: MAX_Y - 120
 }
-const OPPONENT_DEFAULT = {
-  x: 411,
+let OPPONENT_DEFAULT = {
+  x: CENTER_X,
   y: -250,
   colors: [
     '0xfd82ff', // pinkish
@@ -58,6 +60,33 @@ const getRandomNum = (MAX, MIN) => {
 }
 
 const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
+/************************************************/
+
+
+
+
+/***********************************************
+******************* RESIZE *********************
+************************************************/
+window.onresize = function () {
+  MAX_X = app.screen.width
+  MAX_Y = app.screen.height
+  CENTER_X = MAX_X / 2
+  CENTER_Y = MAX_Y / 2
+  PLAYER_DEFAULT = {
+    x: CENTER_X,
+    y: MAX_Y - 120
+  }
+  OPPONENT_DEFAULT.x = CENTER_X
+
+  debugText.x = MAX_X - debugText.width - 60
+  stars.forEach(star => {
+    star.x = getRandomNum(MAX_X, 0)
+    star.y = getRandomNum(MAX_Y, 0)
+    star.sprite.x = star.x
+    star.sprite.y = star.y
+  })
+}
 /************************************************/
 
 
@@ -139,7 +168,7 @@ let debugText = new PIXI.Text(
   }
 );
 debugText.y = 30
-debugText.x = MAX_X - debugText.width - 30
+debugText.x = MAX_X - debugText.width - 60
 app.stage.addChild(debugText)
 /************************************************/
 
@@ -185,21 +214,25 @@ const colorStarThreshold = starAmount / 8
 
 // Create the stars
 const stars = [];
-for (let i = 0; i < starAmount; i++) {
-  const star = {
-    sprite: new PIXI.Sprite(starTexture),
-    scale: getRandomNum(STAR_SIZE_MAX, STAR_SIZE_MIN),
-    x: getRandomNum(MAX_X, 0),
-    y: getRandomNum(MAX_Y, 0),
-    speed: getRandomNum(.3, .1),
-    tint: i < colorStarThreshold ? genRandomHex(6) : '0xFFFFFF'
+
+function createStars() {
+  for (let i = 0; i < starAmount; i++) {
+    const star = {
+      sprite: new PIXI.Sprite(starTexture),
+      scale: getRandomNum(STAR_SIZE_MAX, STAR_SIZE_MIN),
+      x: getRandomNum(MAX_X, 0),
+      y: getRandomNum(MAX_Y, 0),
+      speed: getRandomNum(.3, .1),
+      tint: i < colorStarThreshold ? genRandomHex(6) : '0xFFFFFF'
+    }
+    star.sprite.anchor.x = 0.5;
+    star.sprite.anchor.y = 0.7;
+    placeStar(star)
+    app.stage.addChild(star.sprite);
+    stars.push(star);
   }
-  star.sprite.anchor.x = 0.5;
-  star.sprite.anchor.y = 0.7;
-  placeStar(star)
-  app.stage.addChild(star.sprite);
-  stars.push(star);
 }
+createStars()
 
 function placeStar(star) {
   star.sprite.tint = star.tint
