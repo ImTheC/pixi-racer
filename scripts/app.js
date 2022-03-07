@@ -1,9 +1,25 @@
 /***********************************************
+****************** INIT APP ********************
+************************************************/
+const app = new PIXI.Application({
+  resizeTo: window,
+  autoDensity: true,
+  resolution: devicePixelRatio
+})
+document.body.appendChild(app.view)
+console.log(app.screen.width, '-',
+  app.screen.height)
+/************************************************/
+
+
+
+
+/***********************************************
 ************** HELPERS & GLOBALS ***************
 ************************************************/
-const MAX_X = 911
-const MIN_X = 88
-const MAX_Y = 905
+const MAX_X = app.screen.width
+const MIN_X = 80
+const MAX_Y = app.screen.height
 const MIN_Y = 92
 const STAR_SIZE_MIN = .015
 const STAR_SIZE_MAX = .03
@@ -50,16 +66,6 @@ const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor(Math.r
 
 
 /***********************************************
-****************** INIT APP ********************
-************************************************/
-const app = new PIXI.Application({ width: 1000, height: 1000 })
-document.body.appendChild(app.view)
-/************************************************/
-
-
-
-
-/***********************************************
 ***************** SOUND LOGIC ******************
 ************************************************/
 const gamemusic = PIXI.sound.Sound.from('./assets/sounds/MegaHyperUltrastorm.mp3')
@@ -98,7 +104,7 @@ player.anchor.set(0.5)
 let displayText = new PIXI.Text(
   0,
   {
-    fontSize: 24,
+    fontSize: 40,
     fill: 0xFFFFFF,
     wordWrap: true,
     wordWrapWidth: 180
@@ -118,8 +124,8 @@ let debugText = new PIXI.Text(
     wordWrapWidth: 180
   }
 );
-debugText.y = 10
-debugText.x = 890
+debugText.y = 30
+debugText.x = MAX_X - debugText.width - 30
 app.stage.addChild(debugText)
 /************************************************/
 
@@ -132,10 +138,10 @@ const playerInput = () => {
   // @TODO: Don't use mouse position like this. There's a better way.
   const mouseposition = app.renderer.plugins.interaction.mouse.global;
 
-  if (mouseposition.x > MIN_X && mouseposition.x < MAX_X) {
+  if (mouseposition.x > MIN_X && mouseposition.x < MAX_X - (player.width / 2)) {
     player.x = mouseposition.x
   }
-  if (mouseposition.y > MIN_Y && mouseposition.y < MAX_Y) {
+  if (mouseposition.y > MIN_Y && mouseposition.y < MAX_Y - (player.height / 2)) {
     player.y = mouseposition.y
   }
 
@@ -155,7 +161,7 @@ const opponentMovement = (delta) => {
     elapsed += delta;
     opponent.y = opponent.y + elapsed * speedMultiplier;
   
-    if (opponent.y > 1100) {
+    if (opponent.y > MAX_Y + 100) {
       opponentColorIndex++
       if (opponentColorIndex === OPPONENT_DEFAULT.colors.length ) {
         opponentColorIndex = 0
@@ -180,6 +186,7 @@ const opponentMovement = (delta) => {
 const starTexture = PIXI.Texture.from('./assets/images/star.png');
 
 const starAmount = 100
+const colorStarThreshold = starAmount / 8
 
 // Create the stars
 const stars = [];
@@ -187,10 +194,10 @@ for (let i = 0; i < starAmount; i++) {
   const star = {
     sprite: new PIXI.Sprite(starTexture),
     scale: getRandomNum(STAR_SIZE_MAX, STAR_SIZE_MIN),
-    x: getRandomNum(1000, 0),
-    y: getRandomNum(1000, 0),
+    x: getRandomNum(MAX_X, 0),
+    y: getRandomNum(MAX_Y, 0),
     speed: getRandomNum(.3, .1),
-    tint: getRandomNum(5, 0) > 3 ? '0xFFFFFF' : genRandomHex(6)
+    tint: i < colorStarThreshold ? genRandomHex(6) : '0xFFFFFF'
   }
   star.sprite.anchor.x = 0.5;
   star.sprite.anchor.y = 0.7;
@@ -213,10 +220,10 @@ const starMovement = (delta) => {
   for (let i = 0; i < starAmount; i++) {
     stars[i].sprite.y = stars[i].sprite.y + elapsed * stars[i].speed * speedMultiplier;
 
-    if (stars[i].sprite.y > 1010) {
+    if (stars[i].sprite.y > MAX_Y + 10) {
       app.stage.removeChild(stars[i])
       stars[i].sprite.y = -10
-      stars[i].sprite.x = getRandomNum(1000, 0)
+      stars[i].sprite.x = getRandomNum(MAX_X, 0)
     }
   }
 }
@@ -251,12 +258,13 @@ function endGame() {
   let gameOverText = new PIXI.Text(
     'GAME OVER',
     {
-      fontSize: 24,
+      fontSize: 50,
       fill: 0xFFFFFF
     }
   );
-  gameOverText.x = 400
-  gameOverText.y = 500
+  gameOverText.anchor.set(0.5)
+  gameOverText.x = MAX_X / 2
+  gameOverText.y = MAX_Y / 2
   gamemusic.stop()
   player_death.play()
   app.stage.removeChild(player, opponent)
@@ -321,7 +329,7 @@ const startGame = () => {
 const startButton = new PIXI.Graphics()
 startButton.lineStyle(2, 0xFEEB77, 1)
 startButton.beginFill(0x00FF00, 1)
-startButton.drawCircle(500, 500, 200)
+startButton.drawCircle(MAX_X / 2, MAX_Y / 2, 200)
 startButton.endFill()
 startButton.interactive = true
 startButton.buttonMode = true
@@ -335,8 +343,9 @@ let playGameText = new PIXI.Text(
     strokeThickness: 10
   }
 );
-playGameText.x = 418
-playGameText.y = 430
+playGameText.anchor.set(0.5)
+playGameText.x = MAX_X / 2
+playGameText.y = MAX_Y / 2
 
 startButton.addChild(playGameText)
 app.stage.addChild(startButton)
