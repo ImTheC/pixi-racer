@@ -7,8 +7,6 @@ const app = new PIXI.Application({
   resolution: devicePixelRatio
 })
 document.body.appendChild(app.view)
-console.log(app.screen.width, '-',
-  app.screen.height)
 /************************************************/
 
 
