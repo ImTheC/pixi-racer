@@ -102,11 +102,11 @@ function endGame() {
   GAME.stage.removeChild(GAME.OBJECTS.player, GAME.OBJECTS.opponent)
   GAME.stage.addChild(GAME.DISPLAY.gameOver)
   
-  player.stopMoving()
+  GAME.OBJECTS.player.stopMoving()
   GAME.OBJECTS.player.position.set(GAME.MAX_X / 2, GAME.MAX_Y - GAME.OBJECTS.player.height)
   
   GAME.ticker.remove(GAME.OBJECTS.opponent.ticker)
-  opponent.reset()
+  GAME.OBJECTS.opponent.reset()
 
   GAME.ticker.remove(GAME.OBJECTS.starfield.ticker)
   GAME.ticker.remove(gameLoop)
