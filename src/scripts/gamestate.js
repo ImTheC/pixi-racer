@@ -24,13 +24,13 @@ export default class GAMESTATE extends PIXI.Application {
     },
     CALCULATE_SCALE: () => {
       const default_size = 1000
-      const smallestSize = Math.min(this.MAX_X, this.MAX_Y)
+      const smallestSize = Math.min(this.screen.width, this.screen.height)
 
       this.STATE.scale.size = smallestSize < default_size
         ? smallestSize / default_size
         : 1
 
-      this.STATE.scale.speed = this.MAX_Y / default_size - .08
+      this.STATE.scale.speed = this.screen.height / default_size - .08
     },
     RESIZE: () => {
       this.ACTIONS.CALCULATE_SCALE()
