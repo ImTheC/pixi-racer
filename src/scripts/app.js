@@ -1,6 +1,6 @@
 import { sound } from '@pixi/sound';
 import GAMESTATE from './gamestate'
-import { checkForCollision, setPosition } from './helpers';
+import { checkForCollision, debounce } from './helpers';
 
 import shipSource from '~/assets/images/ship.png'
 import starSource from '~/assets/images/star.png'
@@ -22,8 +22,9 @@ const GAME = new GAMESTATE({
   resolution: devicePixelRatio,
 })
 document.body.appendChild(GAME.view)
-window.onresize = GAME.ACTIONS.RESIZE
-screen.orientation.onchange = GAME.ACTIONS.RESIZE
+
+window.onresize = () => debounce(GAME.ACTIONS.RESIZE)
+screen.orientation.onchange = () => debounce(GAME.ACTIONS.RESIZE)
 
 
 /***********************************************
@@ -68,8 +69,6 @@ GAME.stage.addChild(GAME.DISPLAY.debug)
 GAME.DISPLAY.startButton = createButton({ text: 'GO', callback: startGame, GAME })
 
 function loadStartButton () {
-  GAME.DISPLAY.startButton.x = GAME.MAX_X / 2 - GAME.DISPLAY.startButton.width / 2
-  GAME.DISPLAY.startButton.y = GAME.MAX_Y / 2 - GAME.DISPLAY.startButton.height / 2
   GAME.stage.addChild(GAME.DISPLAY.startButton)
 }
 /************************************************/

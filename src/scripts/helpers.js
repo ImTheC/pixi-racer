@@ -24,3 +24,13 @@ export const checkForCollision = (object1, object2, overlap = 50) => {
       && bounds1.y < bounds2.y + bounds2.height - overlap
       && bounds1.y + bounds1.height > bounds2.y + overlap
 }
+
+let debounceTimer
+export const debounce = (cb, delay = 25) => {
+  console.log('called')
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    console.log('debounce')
+    cb()
+  }, delay)
+}

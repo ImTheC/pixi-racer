@@ -10,8 +10,8 @@ export default function createStarfield ({ texture, GAME }) {
   const starfield = {
     resize: () => {
       starfield.stars.forEach(star => {
-        star.x = getRandomNum(GAME.MAX_X, 0)
-        star.y = getRandomNum(GAME.MAX_Y, 0)
+        star.x = getRandomNum(GAME.screen.width, 0)
+        star.y = getRandomNum(GAME.screen.height, 0)
         star.sprite.x = star.x
         star.sprite.y = star.y
       })

@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-export default function loadDisplay (app) {
+export default function loadDisplay (GAME) {
   const display = {}
 
   // DEBUG TEXT
@@ -14,9 +14,9 @@ export default function loadDisplay (app) {
     }
   );
   display.debug.y = 10
-  display.debug.x = app.screen.width - display.debug.width - 10
+  display.debug.x = GAME.screen.width - display.debug.width - 10
   display.debug.resize = () => {
-    display.debug.x = app.screen.width - display.debug.width - 10
+    display.debug.x = GAME.screen.width - display.debug.width - 10
   }
 
   // GAME OVER TEXT
@@ -28,8 +28,12 @@ export default function loadDisplay (app) {
     }
   );
   display.gameOver.anchor.set(0.5)
-  display.gameOver.x = app.screen.width / 2
-  display.gameOver.y = app.screen.height / 2
+  display.gameOver.x = GAME.screen.width / 2
+  display.gameOver.y = GAME.screen.height / 2
+  display.gameOver.resize = () => {
+    display.gameOver.x = GAME.screen.width / 2
+    display.gameOver.y = GAME.screen.height / 2
+  }
 
   // SCORE TEXT
   display.score = new PIXI.Text(

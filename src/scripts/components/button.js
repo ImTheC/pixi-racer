@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js'
-import { setPositionByPercent } from '../helpers'
 
 export default function createButton ({
   callback = () => {},
@@ -47,7 +46,8 @@ export default function createButton ({
 
   buttonContainer.resize = () => {
     buttonContainer.scale.set(GAME.STATE.scale.size)
-    setPositionByPercent(buttonContainer, GAME)
+    buttonContainer.x = GAME.screen.width / 2 - buttonContainer.width / 2
+    buttonContainer.y = GAME.screen.height / 2 - buttonContainer.height / 2
   }
 
   buttonContainer.resize()
