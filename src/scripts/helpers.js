@@ -26,7 +26,7 @@ export const checkForCollision = (object1, object2, overlap = 30) => {
 }
 
 let debounceTimer
-export const debounce = (cb, delay = 25) => {ß
+export const debounce = (cb, delay = 25) => {
   clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
     cb()
