@@ -20,15 +20,11 @@ export default function createPlayer ({ texture, GAME }) {
     player.followPointer = false
   }
 
-  player.on('pointerdown', player.startMoving)
-  player.on('pointerup', player.stopMoving)
   player.on('pointermove', (event) => {
-    if (player.followPointer) {
-      const inputPosition = event.data.global;
+    const inputPosition = event.data.global;
 
-      player.x = clamp(inputPosition.x, player.width / 2, GAME.MAX_X - player.width / 2)
-      player.y = clamp(inputPosition.y, player.height / 2, GAME.MAX_Y - player.height  / 2)
-    }
+    player.x = clamp(inputPosition.x, player.width / 2, GAME.MAX_X - player.width / 2)
+    player.y = clamp(inputPosition.y, player.height / 2, GAME.MAX_Y - player.height  / 2)
   })
 
   player.resize = () => {
