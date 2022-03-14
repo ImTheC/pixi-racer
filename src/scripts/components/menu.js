@@ -19,12 +19,10 @@ export default function createMenu (buttons = []) {
   menuContainer.width = width
 
   buttons.forEach(button => {
-    console.log(button)
     button.x = currentPosition.x
     button.y = currentPosition.y
     menuContainer.addChild(button)
     currentPosition.y+= button.height + padding
-    console.log(currentPosition)
   })
 
   return menuContainer
