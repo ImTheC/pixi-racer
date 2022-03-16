@@ -22,7 +22,7 @@ export default function createStarfield ({ texture, GAME }) {
       elapsed += delta;
   
       for (let i = 0; i < starAmount; i++) {
-        starfield.stars[i].sprite.y = starfield.stars[i].sprite.y + (elapsed * starfield.stars[i].speed * (GAME.STATE.score + 1) * GAME.STATE.scale.speed)
+        starfield.stars[i].sprite.y = starfield.stars[i].sprite.y + (elapsed * starfield.stars[i].speed * GAME.STATE.speed * GAME.STATE.scale.speed)
   
         if (starfield.stars[i].sprite.y > GAME.screen.height + 10) {
           starfield.stars[i].sprite.y = -10
