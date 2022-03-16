@@ -12,7 +12,7 @@ import gamemusic from '~/assets/sounds/MegaHyperUltrastorm.mp3'
 import createButton from './components/button'
 import loadResources from './loadResources'
 import createPlayer from './player'
-import createOpponent from './opponent'
+import createOpponents from './opponents'
 import loadDisplay from './display';
 import createStarfield from './starfield';
 
@@ -45,7 +45,7 @@ const loader = loadResources({
       GAME
     })
 
-    GAME.OBJECTS.opponent = createOpponent({
+    GAME.OBJECTS.opponents = createOpponents({
       texture: loader.resources.ship.texture,
       GAME
     })
@@ -81,8 +81,10 @@ function startGame () {
   GAME.stage.removeChild(GAME.DISPLAY.startButton)
 
   sound.play('gamemusic')
-  GAME.stage.addChild(GAME.DISPLAY.score, GAME.OBJECTS.opponent, GAME.OBJECTS.player)
-  GAME.ticker.add(GAME.OBJECTS.opponent.ticker)
+  GAME.stage.addChild(GAME.DISPLAY.score)
+  GAME.OBJECTS.opponents.addToStage()
+  GAME.stage.addChild(GAME.OBJECTS.player)
+  GAME.OBJECTS.opponents.startTicker()
   GAME.ticker.add(GAME.OBJECTS.starfield.ticker)
   GAME.ticker.add(gameLoop)
 }
@@ -98,14 +100,15 @@ function endGame() {
   sound.stop('gamemusic')
   setTimeout(() => sound.play('wahwahwah'), 1000)
   
-  GAME.stage.removeChild(GAME.OBJECTS.player, GAME.OBJECTS.opponent)
+  GAME.stage.removeChild(GAME.OBJECTS.player)
+  GAME.OBJECTS.opponents.removeFromStage()
   GAME.stage.addChild(GAME.DISPLAY.gameOver)
   
   GAME.OBJECTS.player.stopMoving()
   GAME.OBJECTS.player.position.set(GAME.MAX_X / 2, GAME.MAX_Y - GAME.OBJECTS.player.height)
   
-  GAME.ticker.remove(GAME.OBJECTS.opponent.ticker)
-  GAME.OBJECTS.opponent.reset()
+  GAME.OBJECTS.opponents.stopTicker()
+  GAME.OBJECTS.opponents.reset()
 
   GAME.ticker.remove(GAME.OBJECTS.starfield.ticker)
   GAME.ticker.remove(gameLoop)
@@ -114,6 +117,8 @@ function endGame() {
 }
 
 function gameLoop () {
-  if (checkForCollision(GAME.OBJECTS.player, GAME.OBJECTS.opponent)) { endGame() }
+  GAME.OBJECTS.opponents.opponents.forEach(opponent => {
+    checkForCollision(GAME.OBJECTS.player, opponent) && endGame()
+  })
 }
 /************************************************/

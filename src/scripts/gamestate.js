@@ -15,12 +15,14 @@ export default class GAMESTATE extends PIXI.Application {
       size: 1,
       speed: 1
     },
-    score: 0
+    score: 0,
+    speed: 4
   }
   
   ACTIONS = {
     RESET: () => {
       this.ACTIONS.SCORE.RESET()
+      this.ACTIONS.SPEED.RESET()
     },
     CALCULATE_SCALE: () => {
       const default_size = 1000
@@ -53,6 +55,14 @@ export default class GAMESTATE extends PIXI.Application {
       RESET: () => {
         this.STATE.score = 0
         this.DISPLAY.score.text = '0'
+      }
+    },
+    SPEED: {
+      INCREASE: (amount = 1) => {
+        this.STATE.speed+= amount
+      },
+      RESET: () => {
+        this.STATE.speed = 4
       }
     }
   }
