@@ -4,8 +4,8 @@ import { genRandomHex, getRandomNum } from './helpers'
 export default function createStarfield ({ texture, GAME }) {
   const starAmount = 100
   const colorStarThreshold = starAmount / 8
-  const STAR_SIZE_MIN = .015
-  const STAR_SIZE_MAX = .03
+  const STAR_SIZE_MIN = 1
+  const STAR_SIZE_MAX = 3
 
   const starfield = {
     resize: () => {
@@ -22,7 +22,7 @@ export default function createStarfield ({ texture, GAME }) {
       elapsed += delta
   
       for (let i = 0; i < starAmount; i++) {
-        starfield.stars[i].sprite.y = starfield.stars[i].sprite.y + (elapsed * starfield.stars[i].speed * GAME.STATE.speed * GAME.STATE.scale.speed)
+        starfield.stars[i].sprite.y = starfield.stars[i].sprite.y + (elapsed * (starfield.stars[i].speed / 9) * GAME.STATE.speed * GAME.STATE.scale.speed)
   
         if (starfield.stars[i].sprite.y > GAME.screen.height + 10) {
           starfield.stars[i].sprite.y = -10
@@ -38,7 +38,7 @@ export default function createStarfield ({ texture, GAME }) {
       scale: getRandomNum(STAR_SIZE_MAX, STAR_SIZE_MIN),
       x: getRandomNum(GAME.screen.width, 0),
       y: getRandomNum(GAME.screen.height, 0),
-      speed: getRandomNum(.3, .1),
+      speed: getRandomNum(3, 1),
       tint: i < colorStarThreshold ? genRandomHex(6) : '0xFFFFFF'
     }
     star.sprite.anchor.x = 0.5

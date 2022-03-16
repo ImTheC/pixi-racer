@@ -9,7 +9,7 @@ export const setPositionByPercent = (object, GAME) => {
   )
 }
 
-export const getRandomNum = (MAX, MIN) => Math.random() * (MAX - MIN) + MIN
+export const getRandomNum = (MAX, MIN) => Math.floor(Math.random() * (MAX - MIN + 1) + MIN)
 
 export const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')
 
