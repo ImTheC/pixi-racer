@@ -4,6 +4,10 @@ import {
   setPositionByPercent
 } from './helpers'
 
+const shouldTargetPlayer = () => {
+  return getRandomNum(3, 1) === 2
+}
+
 const OPPONENT_COLORS = [
   '0x8389f7', // purpleish
   '0xfd82ff', // pinkish
@@ -69,7 +73,9 @@ export default function createOpponents ({ texture, GAME, amount = 2 }) {
   
     opponent.moveToTop = () => {
       opponent.y = 0 - opponent.height
-      opponent.x = getRandomNum(GAME.MAX_X - opponent.width, opponent.width)
+      opponent.x = shouldTargetPlayer()
+        ? GAME.OBJECTS.player.x
+        : getRandomNum(GAME.MAX_X - opponent.width, opponent.width)
     }
 
     opponent.setStart = () => {
