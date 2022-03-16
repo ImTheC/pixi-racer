@@ -24,7 +24,7 @@ export default function createButton ({
       fill: 0xFFFFFF,
       strokeThickness: 10
     }
-  );
+  )
   buttonText.anchor.set(0.5)
   buttonText.x = (button.x + button.width) / 2
   buttonText.y = (button.y + button.height) / 2

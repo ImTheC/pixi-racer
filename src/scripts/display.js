@@ -12,7 +12,7 @@ export default function loadDisplay (GAME) {
       wordWrap: true,
       wordWrapWidth: 180
     }
-  );
+  )
   display.debug.y = 10
   display.debug.x = GAME.screen.width - display.debug.width - 10
   display.debug.resize = () => {
@@ -26,7 +26,7 @@ export default function loadDisplay (GAME) {
       fontSize: 50,
       fill: 0xFFFFFF
     }
-  );
+  )
   display.gameOver.anchor.set(0.5)
   display.gameOver.x = GAME.screen.width / 2
   display.gameOver.y = GAME.screen.height / 2
@@ -44,7 +44,7 @@ export default function loadDisplay (GAME) {
       wordWrap: true,
       wordWrapWidth: 180
     }
-  );
+  )
   display.score.y = 10
   display.score.x = 10
   

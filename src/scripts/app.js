@@ -1,6 +1,6 @@
-import { sound } from '@pixi/sound';
+import { sound } from '@pixi/sound'
 import GAMESTATE from './gamestate'
-import { checkForCollision, debounce } from './helpers';
+import { checkForCollision, debounce } from './helpers'
 
 import shipSource from '~/assets/images/ship.png'
 import starSource from '~/assets/images/star.png'
@@ -13,8 +13,8 @@ import createButton from './components/button'
 import loadResources from './loadResources'
 import createPlayer from './player'
 import createOpponents from './opponents'
-import loadDisplay from './display';
-import createStarfield from './starfield';
+import loadDisplay from './display'
+import createStarfield from './starfield'
 
 const GAME = new GAMESTATE({
   resizeTo: document.body,
@@ -113,7 +113,7 @@ function endGame() {
   GAME.ticker.remove(GAME.OBJECTS.starfield.ticker)
   GAME.ticker.remove(gameLoop)
 
-  setTimeout(restartGame, 5000);
+  setTimeout(restartGame, 5000)
 }
 
 function gameLoop () {

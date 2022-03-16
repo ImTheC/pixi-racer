@@ -1,5 +1,5 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 // @TODO: add script for building for production
 // @TODO: add version for package file name (i.e. pixi-racer-v020.js)

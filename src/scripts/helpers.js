@@ -16,8 +16,8 @@ export const genRandomHex = size => '0x' + [...Array(size)].map(() => Math.floor
 export const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
 export const checkForCollision = (object1, object2, overlap = 30) => {
-  const bounds1 = object1.getBounds();
-  const bounds2 = object2.getBounds();
+  const bounds1 = object1.getBounds()
+  const bounds2 = object2.getBounds()
 
   return bounds1.x < bounds2.x + bounds2.width - overlap
       && bounds1.x + bounds1.width > bounds2.x + overlap

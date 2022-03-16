@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 import {
   getRandomNum,
   setPositionByPercent
-} from './helpers';
+} from './helpers'
 
 const OPPONENT_COLORS = [
   '0xfd82ff', // pinkish
@@ -89,9 +89,8 @@ export default function createOpponents ({ texture, GAME, amount = 2 }) {
     opponent.ticker = (delta = 1) => {
       let elapsed = 0.0
   
-      elapsed += delta;
-      console.log(GAME.STATE.speed)
-      opponent.y = opponent.y + elapsed * GAME.STATE.speed * GAME.STATE.scale.speed;
+      elapsed += delta
+      opponent.y = opponent.y + elapsed * GAME.STATE.speed * GAME.STATE.scale.speed
     
       if (opponent.y > GAME.MAX_Y + 100) {
         opponent.changeColor()

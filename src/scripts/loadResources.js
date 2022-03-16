@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 export default function loadResources ({ GAME, resources = [], onComplete }) {
   const loadingText = new PIXI.Text(
     'Loading!', { fontSize: 100, fill: 0xFFFFFF }
-  );
+  )
   loadingText.anchor.set(0.5, 0.5)
   loadingText.scale.set(GAME.STATE.scale.size)
   loadingText.x = GAME.screen.width / 2
@@ -25,7 +25,7 @@ export default function loadResources ({ GAME, resources = [], onComplete }) {
   }
   GAME.ticker.add(loadingTicker)
 
-  const loader = new PIXI.Loader();
+  const loader = new PIXI.Loader()
   loader.onComplete.add(() => { 
     loadingText.destroy()
     onComplete()
